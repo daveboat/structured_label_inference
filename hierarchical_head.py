@@ -109,7 +109,7 @@ class HierarchicalHead(nn.Module):
 
         :param x: A tensor of size (Batch, input_feature_length
 
-        :returns: A list of output activations, which have order and lengths equal to self.layer_nodes
+        :returns: A list of output logits, which have order and lengths equal to self.layer_nodes
         """
 
         # stage 1: build the feature vectors (x^l) for each inference layer
@@ -126,7 +126,7 @@ class HierarchicalHead(nn.Module):
         for i, net in enumerate(self.backward_transforms[1:]):
             backward_activations.append(net(backward_activations[i], x_l[-i-2]))
 
-        # reverse backward activations for easier indexing
+        # reverse backward activations for easier indexing (should do this with reversed() for less memory)
         backward_activations = backward_activations[::-1]
 
         # stage 3: build output logits
